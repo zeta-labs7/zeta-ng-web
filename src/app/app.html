@@ -1,0 +1,239 @@
+<div class="app-shell" [class.dark-mode]="isDarkMode()">
+  <aside class="sidebar">
+    <a class="brand" href="#" aria-label="ZL Ticketing home">
+      <span class="brand-mark" aria-hidden="true">
+        <span>ZL</span>
+      </span>
+      <span class="brand-name">ZL <strong>Ticketing</strong></span>
+    </a>
+
+    <div class="workspace-switcher">
+      <span class="workspace-avatar">Z</span>
+      <span class="workspace-copy">
+        <span class="eyebrow">WORKSPACE</span>
+        <strong>Engineering</strong>
+      </span>
+      <span class="switcher-chevron" aria-hidden="true">⌄</span>
+    </div>
+
+    <nav class="side-nav" aria-label="Main navigation">
+      <span class="nav-label">WORKSPACE</span>
+      <a class="nav-item" href="#overview">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="5.5" height="5.5" rx="1" /><rect x="11.5" y="3" width="5.5" height="5.5" rx="1" /><rect x="3" y="11.5" width="5.5" height="5.5" rx="1" /><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1" /></svg>
+        Overview
+      </a>
+      <a class="nav-item active" href="#tickets" aria-current="page">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4.5h12a1 1 0 0 1 1 1v2a2.5 2.5 0 0 0 0 5v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2a2.5 2.5 0 0 0 0-5v-2a1 1 0 0 1 1-1Z" /><path d="M8 7.5h4M8 10h4M8 12.5h2" /></svg>
+        All tickets
+        <span class="nav-count">{{ tickets().length }}</span>
+      </a>
+      <a class="nav-item" href="#my-tickets">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6.5" r="3" /><path d="M4.5 16a5.5 5.5 0 0 1 11 0" /></svg>
+        My requests
+      </a>
+
+      <span class="nav-label nav-label-spaced">CATALOG</span>
+      <a class="nav-item" href="#onboarding">
+        <span class="nav-emoji">◈</span>
+        Application onboarding
+      </a>
+      <a class="nav-item" href="#aws">
+        <span class="nav-emoji aws-emoji">☁</span>
+        AWS provisioning
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="help-card">
+        <span class="help-icon">?</span>
+        <strong>Need a hand?</strong>
+        <p>Check the platform docs or reach out to the DevOps team.</p>
+        <a href="mailto:devops@example.com">Get support <span aria-hidden="true">↗</span></a>
+      </div>
+      <button class="profile-button" type="button" aria-label="Signed in as Admin">
+        <span class="profile-avatar">AD</span>
+        <span class="profile-copy"><strong>Admin</strong><small>Administrator</small></span>
+        <span class="profile-menu" aria-hidden="true">···</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content" id="overview">
+    <header class="topbar">
+      <div class="breadcrumbs"><span>Workspace</span><span class="crumb-separator">/</span><strong>Tickets</strong></div>
+      <div class="topbar-actions">
+        <span class="system-status"><span class="status-pulse"></span> All systems operational</span>
+        <button
+          class="icon-button theme-toggle"
+          type="button"
+          (click)="toggleDarkMode()"
+          [attr.aria-label]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
+          [attr.aria-pressed]="isDarkMode()"
+          [title]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'"
+        >
+          @if (isDarkMode()) {
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.5" /><path d="M10 2v2m0 12v2M2 10h2m12 0h2M4.34 4.34l1.42 1.42m8.48 8.48 1.42 1.42m0-11.32-1.42 1.42m-8.48 8.48-1.42 1.42" /></svg>
+          } @else {
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 12.2A7 7 0 0 1 7.8 3.5a7 7 0 1 0 8.7 8.7Z" /></svg>
+          }
+        </button>
+        <button class="icon-button notification-button" type="button" aria-label="Notifications">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M15 7a5 5 0 0 0-10 0c0 6-2 6-2 7.5h14C17 13 15 13 15 7ZM8 17h4" /></svg>
+          <span class="notification-dot"></span>
+        </button>
+        <span class="topbar-avatar">AD</span>
+      </div>
+    </header>
+
+    <div class="page-content" id="tickets">
+      <section class="welcome-row">
+        <div>
+          <p class="date-label">{{ currentDate() }} · IST</p>
+          <h1>{{ greeting() }}, Admin <span class="wave" aria-hidden="true">✳</span></h1>
+          <p class="page-subtitle">Track requests and keep your delivery moving.</p>
+        </div>
+        <button class="primary-button" type="button" (click)="openCreateDialog()">
+          <span class="plus-icon" aria-hidden="true">+</span>
+          New ticket
+        </button>
+      </section>
+
+      <section class="summary-grid" aria-label="Ticket summary">
+        <article class="summary-card">
+          <div class="summary-top"><span class="summary-label">Open tickets</span><span class="summary-icon icon-violet">◷</span></div>
+          <div class="summary-value">{{ openCount() }}</div>
+          <p>Requests in the queue</p>
+        </article>
+        <article class="summary-card">
+          <div class="summary-top"><span class="summary-label">In progress</span><span class="summary-icon icon-blue">↗</span></div>
+          <div class="summary-value">{{ inProgressCount() }}</div>
+          <p>Being worked on by DevOps</p>
+        </article>
+        <article class="summary-card">
+          <div class="summary-top"><span class="summary-label">Awaiting your input</span><span class="summary-icon icon-amber">!</span></div>
+          <div class="summary-value">{{ needsInputCount() }}</div>
+          <p>Keep things moving along</p>
+        </article>
+        <article class="summary-card">
+          <div class="summary-top"><span class="summary-label">Completed tickets</span><span class="summary-icon icon-green">✓</span></div>
+          <div class="summary-value">{{ completedCount() }}</div>
+          <p>Requests successfully completed</p>
+        </article>
+      </section>
+
+      <section class="request-banner">
+        <div class="banner-art" aria-hidden="true">
+          <span class="banner-orbit orbit-one"></span><span class="banner-orbit orbit-two"></span>
+          <span class="banner-cloud">☁</span><span class="banner-spark spark-one">✦</span><span class="banner-spark spark-two">✧</span>
+        </div>
+        <div class="banner-copy">
+          <span class="banner-kicker">DEVOPS SERVICE CATALOG</span>
+          <h2>What can we help you build?</h2>
+          <p>Get your application onboarded or request the cloud resources you need.</p>
+        </div>
+        <button class="banner-button" type="button" (click)="openCreateDialog()">Browse services <span aria-hidden="true">→</span></button>
+      </section>
+
+      <section class="tickets-section" aria-labelledby="tickets-heading">
+        <div class="section-heading">
+          <div>
+            <h2 id="tickets-heading">Your tickets <span class="section-count">{{ tickets().length }}</span></h2>
+            <p>Stay on top of your DevOps requests.</p>
+          </div>
+          <button class="view-link" type="button" (click)="clearFilters()">View all tickets <span aria-hidden="true">→</span></button>
+        </div>
+
+        <div class="table-card">
+          <div class="table-toolbar">
+            <div class="filter-tabs" role="group" aria-label="Filter tickets by status">
+              <button type="button" class="filter-tab" [class.selected]="activeFilter() === 'All'" [attr.aria-pressed]="activeFilter() === 'All'" (click)="setFilter('All')">All tickets <span>{{ tickets().length }}</span></button>
+              <button type="button" class="filter-tab" [class.selected]="activeFilter() === 'In progress'" [attr.aria-pressed]="activeFilter() === 'In progress'" (click)="setFilter('In progress')">In progress <span>{{ inProgressCount() }}</span></button>
+              <button type="button" class="filter-tab" [class.selected]="activeFilter() === 'Pending'" [attr.aria-pressed]="activeFilter() === 'Pending'" (click)="setFilter('Pending')">Pending <span>{{ needsInputCount() }}</span></button>
+              <button type="button" class="filter-tab" [class.selected]="activeFilter() === 'Completed'" [attr.aria-pressed]="activeFilter() === 'Completed'" (click)="setFilter('Completed')">Completed <span>{{ completedCount() }}</span></button>
+            </div>
+            <label class="search-box">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.7" cy="8.7" r="5.7" /><path d="m13 13 4 4" /></svg>
+              <input #ticketSearch type="search" placeholder="Search tickets..." [value]="searchQuery()" (input)="updateSearch($event)" aria-label="Search tickets" aria-keyshortcuts="/">
+              <kbd aria-hidden="true">/</kbd>
+            </label>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr><th scope="col">TICKET</th><th scope="col">SERVICE</th><th scope="col">STATUS</th><th scope="col">PRIORITY</th><th scope="col">UPDATED</th><th scope="col"><span class="visually-hidden">Open ticket</span></th></tr>
+              </thead>
+              <tbody>
+                @for (ticket of visibleTickets(); track ticket.id) {
+                  <tr>
+                    <td>
+                      <div class="ticket-title-cell">
+                        <span class="ticket-type-icon" [class]="ticket.typeClass">{{ ticket.typeIcon }}</span>
+                        <span class="ticket-title-copy"><button class="ticket-title" type="button" (click)="openTicket(ticket)">{{ ticket.title }}</button><small>{{ ticket.id }} <span>·</span> {{ ticket.requester }}</small></span>
+                      </div>
+                    </td>
+                    <td><span class="service-name">{{ ticket.service }}</span></td>
+                    <td><span class="status-badge" [class]="ticket.statusClass"><span class="status-dot"></span>{{ ticket.status }}</span></td>
+                    <td><span class="priority-label" [class]="ticket.priorityClass"><span class="priority-mark">{{ ticket.priorityIcon }}</span>{{ ticket.priority }}</span></td>
+                    <td class="updated-cell">{{ ticket.updated }}</td>
+                    <td><button class="row-menu" type="button" (click)="openTicket(ticket)" [attr.aria-label]="'View ' + ticket.id">···</button></td>
+                  </tr>
+                } @empty {
+                  <tr><td class="empty-state" colspan="6"><span>⌕</span><strong>No tickets found</strong><small>Try another search or clear your filters.</small><button class="view-link" type="button" (click)="clearFilters()">Clear filters</button></td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer" aria-live="polite"><span>Showing <strong>{{ visibleTickets().length }}</strong> of <strong>{{ tickets().length }}</strong> tickets</span></div>
+        </div>
+      </section>
+      <footer class="page-footer"><span>© 2026 ZL Ticketing</span><span>Built for teams that ship <span class="footer-heart">♥</span></span></footer>
+    </div>
+  </main>
+</div>
+
+@if (isCreateDialogOpen()) {
+  <div class="dialog-backdrop" [class.dark-mode]="isDarkMode()" (click)="closeCreateDialog()">
+    <section class="ticket-dialog" role="dialog" aria-modal="true" aria-labelledby="create-dialog-title" (click)="$event.stopPropagation()">
+      <div class="dialog-heading">
+        <div><span class="dialog-kicker">DEVOPS REQUEST</span><h2 id="create-dialog-title">Create a new ticket</h2><p>Tell us what you need and our team will take it from here.</p></div>
+        <button class="dialog-close" type="button" (click)="closeCreateDialog()" aria-label="Close dialog">×</button>
+      </div>
+      <form #ticketForm="ngForm" (ngSubmit)="createTicket(ticketForm)">
+        <label class="form-field">Request title<input name="title" ngModel required maxlength="90" placeholder="e.g. Onboard payments API" autofocus></label>
+        <div class="form-row">
+          <label class="form-field">Request type
+            <select name="type" ngModel required>
+              <option value="Application onboarding">Application onboarding</option>
+              <option value="AWS provisioning">AWS provisioning</option>
+              <option value="CI/CD support">CI/CD support</option>
+              <option value="Access request">Access request</option>
+            </select>
+          </label>
+          <label class="form-field">Priority
+            <select name="priority" ngModel required>
+              <option value="Normal">Normal</option><option value="Low">Low</option><option value="High">High</option><option value="Urgent">Urgent</option>
+            </select>
+          </label>
+        </div>
+        <label class="form-field">Service or application<input name="service" ngModel required maxlength="60" placeholder="e.g. Payments API"></label>
+        <label class="form-field">A little more detail <textarea name="description" ngModel rows="3" maxlength="500" placeholder="What are you trying to get done?"></textarea></label>
+        <div class="dialog-actions"><button class="secondary-button" type="button" (click)="closeCreateDialog()">Cancel</button><button class="primary-button" type="submit" [disabled]="ticketForm.invalid">Create ticket <span aria-hidden="true">→</span></button></div>
+      </form>
+    </section>
+  </div>
+}
+
+@if (selectedTicket(); as ticket) {
+  <div class="dialog-backdrop" [class.dark-mode]="isDarkMode()" (click)="closeTicket()">
+    <section class="ticket-dialog detail-dialog" role="dialog" aria-modal="true" aria-labelledby="detail-dialog-title" (click)="$event.stopPropagation()">
+      <div class="dialog-heading">
+        <div><span class="dialog-kicker">{{ ticket.id }} · {{ ticket.service }}</span><h2 id="detail-dialog-title">{{ ticket.title }}</h2><p>Requested by {{ ticket.requester }} · Updated {{ ticket.updated }}</p></div>
+        <button class="dialog-close" type="button" (click)="closeTicket()" aria-label="Close ticket details">×</button>
+      </div>
+      <div class="detail-grid"><div><span class="detail-label">Status</span><span class="status-badge" [class]="ticket.statusClass"><span class="status-dot"></span>{{ ticket.status }}</span></div><div><span class="detail-label">Priority</span><span class="priority-label" [class]="ticket.priorityClass"><span class="priority-mark">{{ ticket.priorityIcon }}</span>{{ ticket.priority }}</span></div><div><span class="detail-label">Request type</span><strong>{{ ticket.type }}</strong></div><div><span class="detail-label">Assigned to</span><strong>{{ ticket.assignee }}</strong></div></div>
+      @if (ticket.description) { <div class="detail-description"><span class="detail-label">Request details</span><p>{{ ticket.description }}</p></div> }
+      <div class="dialog-actions"><button class="secondary-button" type="button" (click)="closeTicket()">Close</button></div>
+    </section>
+  </div>
+}
