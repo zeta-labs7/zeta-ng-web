@@ -1,0 +1,26 @@
+name: Trigger CI
+
+on:
+  push:
+    branches:
+      - development          # ← only this branch
+      # - main               # add more if needed
+      # - 'release/**'       # or use patterns
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger CI workflows repository
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          # token: ${{ secrets.CI_DISPATCH_TOKEN }}
+          repository: zeta-labs7/zticketing-ci
+          event-type: zticketing-ci-frontend
+          client-payload: |
+            {
+              "source_repo": "${{ github.repository }}",
+              "sha": "${{ github.sha }}",
+              "ref": "${{ github.ref_name }}",
+              "actor": "${{ github.actor }}"
+            }
